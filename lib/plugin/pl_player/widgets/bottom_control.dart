@@ -15,8 +15,8 @@ class BottomControl extends StatelessWidget implements PreferredSizeWidget {
   const BottomControl({
     this.controller,
     this.buildBottomControl,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Size get preferredSize => const Size(double.infinity, kToolbarHeight);
