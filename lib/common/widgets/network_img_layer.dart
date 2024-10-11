@@ -10,20 +10,20 @@ import '../constants.dart';
 Box<dynamic> setting = GStorage.setting;
 
 class NetworkImgLayer extends StatelessWidget {
-  const NetworkImgLayer({
-    super.key,
-    this.src,
-    required this.width,
-    required this.height,
-    this.type,
-    this.fadeOutDuration,
-    this.fadeInDuration,
-    // 图片质量 默认1%
-    this.quality,
-    this.origAspectRatio,
-    this.semanticsLabel,
-    this.ignoreHeight,
-  });
+  const NetworkImgLayer(
+      {super.key,
+      this.src,
+      required this.width,
+      required this.height,
+      this.type,
+      this.fadeOutDuration,
+      this.fadeInDuration,
+      // 图片质量 默认1%
+      this.quality,
+      this.origAspectRatio,
+      this.semanticsLabel,
+      this.ignoreHeight,
+      this.diskCache = false});
 
   final String? src;
   final double width;
@@ -35,7 +35,7 @@ class NetworkImgLayer extends StatelessWidget {
   final double? origAspectRatio;
   final String? semanticsLabel;
   final bool? ignoreHeight;
-
+  final bool diskCache;
   @override
   Widget build(BuildContext context) {
     final int defaultImgQuality = GlobalData().imgQuality;
@@ -63,23 +63,40 @@ class NetworkImgLayer extends StatelessWidget {
                       ? 0
                       : StyleString.imgRadius.x,
             ),
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              width: width,
-              height: ignoreHeight == null || ignoreHeight == false? height:null,
-              memCacheWidth: memCacheWidth,
-              memCacheHeight: memCacheHeight,
-              fit: BoxFit.cover,
-              fadeOutDuration:
-                  fadeOutDuration ?? const Duration(milliseconds: 120),
-              fadeInDuration:
-                  fadeInDuration ?? const Duration(milliseconds: 120),
-              filterQuality: FilterQuality.low,
-              errorWidget: (BuildContext context, String url, Object error) =>
-                  placeholder(context),
-              placeholder: (BuildContext context, String url) =>
-                  placeholder(context),
-            ),
+            child: diskCache
+                ? CachedNetworkImage(
+                    imageUrl: imageUrl,
+                    width: width,
+                    height: ignoreHeight == null || ignoreHeight == false
+                        ? height
+                        : null,
+                    memCacheWidth: memCacheWidth,
+                    memCacheHeight: memCacheHeight,
+                    fit: BoxFit.cover,
+                    fadeOutDuration:
+                        fadeOutDuration ?? const Duration(milliseconds: 120),
+                    fadeInDuration:
+                        fadeInDuration ?? const Duration(milliseconds: 120),
+                    filterQuality: FilterQuality.low,
+                    errorWidget:
+                        (BuildContext context, String url, Object error) =>
+                            placeholder(context),
+                    placeholder: (BuildContext context, String url) =>
+                        placeholder(context),
+                  )
+                : Image.network(
+                    imageUrl,
+                    width: width,
+                    height: ignoreHeight == null || ignoreHeight == false
+                        ? height
+                        : null,
+                    cacheWidth: memCacheWidth,
+                    cacheHeight: memCacheHeight,
+                    fit: BoxFit.cover,
+                    filterQuality: FilterQuality.low,
+                    errorBuilder: (context, error, stackTrace) =>
+                        placeholder(context),
+                  ),
           )
         : placeholder(context);
     if (semanticsLabel != null) {
