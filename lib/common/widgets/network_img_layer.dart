@@ -63,7 +63,7 @@ class NetworkImgLayer extends StatelessWidget {
                       ? 0
                       : StyleString.imgRadius.x,
             ),
-            child: diskCache
+            child: diskCache || type == 'avatar'
                 ? CachedNetworkImage(
                     imageUrl: imageUrl,
                     width: width,
