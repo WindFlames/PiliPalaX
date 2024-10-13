@@ -41,7 +41,8 @@
         android:icon="@mipmap/ic_launcher"
         xmlns:tools="http://schemas.android.com/tools"
         android:enableOnBackInvokedCallback="true"
-        android:allowBackup="false"
+        android:allowBackup="true"
+        android:extractNativeLibs="false"
         android:fullBackupContent="false"
         tools:replace="android:allowBackup">
         <activity
