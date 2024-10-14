@@ -1,3 +1,4 @@
+import 'package:PiliPalaX/models/collect/collectUp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class MemberController extends GetxController {
   RxString face = ''.obs;
   String? heroTag;
   Box userInfoCache = GStorage.userInfo;
+  Box collectUpCache = GStorage.collectUp;
   late int ownerMid;
   bool specialFollowed = false;
   // 投稿列表
@@ -150,6 +152,17 @@ class MemberController extends GetxController {
       },
     );
     await delayedUpdateRelation();
+  }
+
+  Future addToCollect() async {
+    CollectUpModel collected = collectUpCache.get("collectedUps");
+    collected.list ??= List.empty(growable: true);
+    collected.list!.add(CollectUpItem(
+        mid: mid,
+        heroTag: heroTag,
+        face: face.value,
+        nickname: memberInfo.value.name));
+    collectUpCache.put("collectedUps", collected);
   }
 
   // 关系查询

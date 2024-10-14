@@ -94,9 +94,8 @@ class _MemberPageState extends State<MemberPage>
                             () => Text(
                               _memberController.memberInfo.value.name ?? '',
                               style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
                                   fontSize: 14),
                             ),
                           ),
@@ -118,6 +117,17 @@ class _MemberPageState extends State<MemberPage>
                 icon: const Icon(Icons.more_vert),
                 itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                   if (_memberController.ownerMid != _memberController.mid) ...[
+                    PopupMenuItem(
+                      onTap: () => _memberController.addToCollect(),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.block, size: 19),
+                          SizedBox(width: 10),
+                          Text("收藏UP"),
+                        ],
+                      ),
+                    ),
                     PopupMenuItem(
                       onTap: () => _memberController.blockUser(context),
                       child: Row(

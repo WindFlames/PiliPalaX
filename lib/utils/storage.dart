@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:PiliPalaX/models/collect/collectUp.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:PiliPalaX/models/model_owner.dart';
@@ -13,6 +14,7 @@ class GStorage {
   static late final Box<dynamic> localCache;
   static late final Box<dynamic> setting;
   static late final Box<dynamic> video;
+  static late final Box<dynamic> collectUp;
 
   static Future<void> init() async {
     final Directory dir = await getApplicationSupportDirectory();
@@ -38,6 +40,12 @@ class GStorage {
     // 搜索历史
     historyWord = await Hive.openBox(
       'historyWord',
+      compactionStrategy: (int entries, int deletedEntries) {
+        return deletedEntries > 10;
+      },
+    );
+    collectUp = await Hive.openBox(
+      'collectUp',
       compactionStrategy: (int entries, int deletedEntries) {
         return deletedEntries > 10;
       },
@@ -69,6 +77,8 @@ class GStorage {
     Hive.registerAdapter(LevelInfoAdapter());
     Hive.registerAdapter(HotSearchModelAdapter());
     Hive.registerAdapter(HotSearchItemAdapter());
+    Hive.registerAdapter(CollectUpModelAdapter());
+    Hive.registerAdapter(CollectUpItemAdapter());
   }
 
   static Future<void> close() async {
@@ -84,6 +94,8 @@ class GStorage {
     setting.close();
     video.compact();
     video.close();
+    collectUp.compact();
+    collectUp.close();
   }
 }
 
