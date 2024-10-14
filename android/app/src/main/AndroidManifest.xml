@@ -42,10 +42,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:enableOnBackInvokedCallback="true"
         android:allowBackup="true"
-        android:extractNativeLibs="false"
+        <!-- android:extractNativeLibs="false" -->
         android:fullBackupContent="false"
         tools:replace="android:allowBackup"
-        tools:replace="android:extractNativeLibs">
+        <!-- tools:replace="android:extractNativeLibs" -->
+        >
         <activity
             android:name="com.orz12.PiliPalaX.MainActivity"
             android:exported="true"
